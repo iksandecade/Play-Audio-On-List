@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "660733854676",
+    "firebase_url": "https://playaudiolist.firebaseio.com",
+    "project_id": "playaudiolist",
+    "storage_bucket": "playaudiolist.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:660733854676:android:bc1ada11d7391bd4",
+        "android_client_info": {
+          "package_name": "project.iksandecade.playaudioonlist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "660733854676-mutpjsna6njir2islb9m72qk8is0b2tr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "project.iksandecade.playaudioonlist",
+            "certificate_hash": "C8DC156236720772D75E2EFDAAEA9FAD788F9503"
+          }
+        },
+        {
+          "client_id": "660733854676-l9jgq94u6533dbotomlu13k5dmj9atmu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSbxm7SB9VUe82PCTN4tuMrWVkvOcVDYE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "660733854676-l9jgq94u6533dbotomlu13k5dmj9atmu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
