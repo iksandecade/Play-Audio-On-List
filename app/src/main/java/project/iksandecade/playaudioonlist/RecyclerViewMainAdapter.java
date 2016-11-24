@@ -34,6 +34,7 @@ public class RecyclerViewMainAdapter extends RecyclerView.Adapter<RecyclerViewMa
     private List<ListAudio> listAudios;
     private List<SeekBar> seekBars = new ArrayList<SeekBar>();
     private List<Runnable> runnables = new ArrayList<Runnable>();
+    private List<ImageView> imageViews = new ArrayList<ImageView>();
     private LayoutInflater layoutInflater;
     private MediaPlayer mp = new MediaPlayer();
     private int currentPosition = -1;
@@ -52,6 +53,22 @@ public class RecyclerViewMainAdapter extends RecyclerView.Adapter<RecyclerViewMa
 
     @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
+        seekBars.clear();
+        runnables.clear();
+        imageViews.clear();
+        for (int i = 0; i < listAudios.size(); i++) {
+            SeekBar seekBar = new SeekBar(context);
+            ImageView imageView = new ImageView(context);
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+
+                }
+            };
+            seekBars.add(seekBar);
+            runnables.add(runnable);
+            imageViews.add(imageView);
+        }
         return new Holder(layoutInflater.inflate(R.layout.item_list, parent, false));
     }
 
@@ -68,6 +85,7 @@ public class RecyclerViewMainAdapter extends RecyclerView.Adapter<RecyclerViewMa
                     String name = listAudios.get(position).getName();
                     currentPosition = position;
                     seekBars.add(position, holder.sbAudio);
+                    imageViews.add(position, holder.ivPlay);
                     playSong(file.getPath() + "/" + name);
                 }
 
@@ -97,12 +115,15 @@ public class RecyclerViewMainAdapter extends RecyclerView.Adapter<RecyclerViewMa
             mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 
                 public void onCompletion(MediaPlayer arg0) {
+                    for(int i =0; i < imageViews.size(); i++){
+                        imageViews.get(i).setImageResource(R.mipmap.ic_play_arrow_white_24dp);
+                    }
                     currentPosition = -1;
                 }
 
             });
 
-
+            imageViews.get(currentPosition).setImageResource(R.mipmap.ic_pause_white_24dp);
             final SeekBar seekBar = seekBars.get(currentPosition);
             finalTime = mp.getDuration();
             startTime = mp.getCurrentPosition();
@@ -133,8 +154,10 @@ public class RecyclerViewMainAdapter extends RecyclerView.Adapter<RecyclerViewMa
 
     void pausePlaying() {
         if (mp.isPlaying()) {
+            imageViews.get(currentPosition).setImageResource(R.mipmap.ic_play_arrow_white_24dp);
             mp.pause();
         } else {
+            imageViews.get(currentPosition).setImageResource(R.mipmap.ic_pause_white_24dp);
             mp.start();
         }
     }
@@ -142,19 +165,7 @@ public class RecyclerViewMainAdapter extends RecyclerView.Adapter<RecyclerViewMa
 
     @Override
     public int getItemCount() {
-        seekBars.clear();
-        runnables.clear();
-        for (int i = 0; i < listAudios.size(); i++) {
-            SeekBar seekBar = new SeekBar(context);
-            Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
 
-                }
-            };
-            seekBars.add(seekBar);
-            runnables.add(runnable);
-        }
         return listAudios.size();
     }
 
