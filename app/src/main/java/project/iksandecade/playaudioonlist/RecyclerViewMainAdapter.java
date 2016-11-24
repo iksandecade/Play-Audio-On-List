@@ -1,6 +1,7 @@
 package project.iksandecade.playaudioonlist;
 
 import android.app.Activity;
+import android.content.Context;
 import android.media.MediaPlayer;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.SeekBar;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import project.iksandecade.playaudioonlist.dao.ListAudio;
@@ -29,15 +31,18 @@ public class RecyclerViewMainAdapter extends RecyclerView.Adapter<RecyclerViewMa
 
 
     private List<ListAudio> listAudios;
+    private List<SeekBar> seekBars = new ArrayList<SeekBar>();
     private LayoutInflater layoutInflater;
     private MediaPlayer mp = new MediaPlayer();
     private int currentPosition = -1;
+    private Context context;
     private boolean isPlay = false;
     private File file;
 
     RecyclerViewMainAdapter(List<ListAudio> listAudios, Activity activity) {
         this.listAudios = listAudios;
         this.layoutInflater = activity.getLayoutInflater();
+        context = activity;
         file = activity.getCacheDir();
     }
 
@@ -48,7 +53,6 @@ public class RecyclerViewMainAdapter extends RecyclerView.Adapter<RecyclerViewMa
 
     @Override
     public void onBindViewHolder(final Holder holder, final int position) {
-
         holder.ivPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,6 +63,7 @@ public class RecyclerViewMainAdapter extends RecyclerView.Adapter<RecyclerViewMa
                     Log.d("start on", currentPosition + "," + position);
                     String name = listAudios.get(position).getName();
                     currentPosition = position;
+                    seekBars.add(position, holder.sbAudio);
                     playSong(file.getPath() + "/" + name);
                 }
 
@@ -68,8 +73,8 @@ public class RecyclerViewMainAdapter extends RecyclerView.Adapter<RecyclerViewMa
 
     private void playSong(String songPath) {
         Log.d("play on", currentPosition + "" + songPath);
-        for (int i = 0; i < listAudios.size(); i++) {
-            Log.d("Resulto", listAudios.get(i).getName());
+        for(int i = 0; i < seekBars.size(); i++){
+            seekBars.get(i).setProgress(100);
         }
         try {
 
@@ -83,11 +88,9 @@ public class RecyclerViewMainAdapter extends RecyclerView.Adapter<RecyclerViewMa
                 Log.d("hello", "gagal");
             }
 
-            // Setup listener so next song starts automatically
             mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 
                 public void onCompletion(MediaPlayer arg0) {
-//                    nextSong();
                     currentPosition = -1;
                 }
 
@@ -107,18 +110,13 @@ public class RecyclerViewMainAdapter extends RecyclerView.Adapter<RecyclerViewMa
     }
 
 
-    private void nextSong() {
-        if (++currentPosition >= listAudios.size()) {
-            // Last song, just reset currentPosition
-            currentPosition = 0;
-        } else {
-            // Play next song
-            playSong(file.getPath() + "/" + listAudios.get(currentPosition).getName());
-        }
-    }
-
     @Override
     public int getItemCount() {
+        seekBars.clear();
+        for (int i = 0; i < listAudios.size(); i++) {
+            SeekBar seekBar = new SeekBar(context);
+            seekBars.add(seekBar);
+        }
         return listAudios.size();
     }
 
