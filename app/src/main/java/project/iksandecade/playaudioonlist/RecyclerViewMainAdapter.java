@@ -32,6 +32,7 @@ public class RecyclerViewMainAdapter extends RecyclerView.Adapter<RecyclerViewMa
     private LayoutInflater layoutInflater;
     private MediaPlayer mp = new MediaPlayer();
     private int currentPosition = -1;
+    private boolean isPlay = false;
     private File file;
 
     RecyclerViewMainAdapter(List<ListAudio> listAudios, Activity activity) {
@@ -52,7 +53,7 @@ public class RecyclerViewMainAdapter extends RecyclerView.Adapter<RecyclerViewMa
             @Override
             public void onClick(View v) {
                 if (currentPosition == position) {
-//                    pausePlaying();
+                    pausePlaying();
                     Log.d("pause on", currentPosition + "," + position);
                 } else {
                     Log.d("start on", currentPosition + "," + position);
@@ -87,7 +88,7 @@ public class RecyclerViewMainAdapter extends RecyclerView.Adapter<RecyclerViewMa
 
                 public void onCompletion(MediaPlayer arg0) {
 //                    nextSong();
-//                    currentPosition = 0;
+                    currentPosition = -1;
                 }
 
             });
