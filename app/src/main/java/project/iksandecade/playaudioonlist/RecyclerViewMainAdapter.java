@@ -31,7 +31,7 @@ public class RecyclerViewMainAdapter extends RecyclerView.Adapter<RecyclerViewMa
     private List<ListAudio> listAudios;
     private LayoutInflater layoutInflater;
     private MediaPlayer mp = new MediaPlayer();
-    private int currentPosition = 0;
+    private int currentPosition = -1;
     private File file;
 
     RecyclerViewMainAdapter(List<ListAudio> listAudios, Activity activity) {
@@ -46,18 +46,30 @@ public class RecyclerViewMainAdapter extends RecyclerView.Adapter<RecyclerViewMa
     }
 
     @Override
-    public void onBindViewHolder(final Holder holder, int position) {
-        final String name = listAudios.get(position).getName();
-        currentPosition = position;
+    public void onBindViewHolder(final Holder holder, final int position) {
+
         holder.ivPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                playSong(file.getPath() + "/" + name);
+                if (currentPosition == position) {
+//                    pausePlaying();
+                    Log.d("pause on", currentPosition + "," + position);
+                } else {
+                    Log.d("start on", currentPosition + "," + position);
+                    String name = listAudios.get(position).getName();
+                    currentPosition = position;
+                    playSong(file.getPath() + "/" + name);
+                }
+
             }
         });
     }
 
     private void playSong(String songPath) {
+        Log.d("play on", currentPosition + "" + songPath);
+        for (int i = 0; i < listAudios.size(); i++) {
+            Log.d("Resulto", listAudios.get(i).getName());
+        }
         try {
 
             File file1 = new File(songPath);
@@ -66,7 +78,7 @@ public class RecyclerViewMainAdapter extends RecyclerView.Adapter<RecyclerViewMa
                 mp.setDataSource(songPath);
                 mp.prepare();
                 mp.start();
-            } else{
+            } else {
                 Log.d("hello", "gagal");
             }
 
@@ -74,7 +86,8 @@ public class RecyclerViewMainAdapter extends RecyclerView.Adapter<RecyclerViewMa
             mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 
                 public void onCompletion(MediaPlayer arg0) {
-                    nextSong();
+//                    nextSong();
+//                    currentPosition = 0;
                 }
 
             });
@@ -83,6 +96,15 @@ public class RecyclerViewMainAdapter extends RecyclerView.Adapter<RecyclerViewMa
             e.printStackTrace();
         }
     }
+
+    void pausePlaying() {
+        if (mp.isPlaying()) {
+            mp.pause();
+        } else {
+            mp.start();
+        }
+    }
+
 
     private void nextSong() {
         if (++currentPosition >= listAudios.size()) {

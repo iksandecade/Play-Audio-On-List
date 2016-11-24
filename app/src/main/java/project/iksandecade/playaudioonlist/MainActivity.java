@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadData() {
         listAudioList.clear();
-        listAudioList.addAll(daoSession.getListAudioDao().queryBuilder().orderDesc(ListAudioDao.Properties.TimeStamp).list());
+        listAudioList.addAll(daoSession.getListAudioDao().queryBuilder().orderAsc(ListAudioDao.Properties.TimeStamp).list());
         recyclerViewMainAdapter.notifyDataSetChanged();
 
     }
